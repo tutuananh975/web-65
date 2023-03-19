@@ -1,0 +1,18 @@
+{
+  "name": "session_02",
+  "version": "1.0.0",
+  "description": "- Introduction to ExpressJS - Installation - Example of a simple ExpressJS application - Routing in ExpressJS - Request and Response objects - HTTP Methods & Status Codes - Rest API",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^2.0.21"
+  }
+}

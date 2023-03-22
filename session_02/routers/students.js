@@ -27,7 +27,7 @@ router.get("/:id", (req, res) => {
     (student) => student.id === Number(req.params.id)
   );
 
-  res.status(200).send(student);
+  res.status(200).send(students);
 });
 
 router.post("/", (req, res) => {

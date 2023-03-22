@@ -13,10 +13,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/students", studentRouters);
-app.use("/teachers", teacherRouters);
+app.use("/api/v1/teachers", teacherRouters);
 app.use("/auth", authRouters);
 
 app.listen(8080, (err) => {
   console.log("Server is running");
 });
-``

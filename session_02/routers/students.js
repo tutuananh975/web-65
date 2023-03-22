@@ -25,7 +25,14 @@ router.get("/", (req, res) => {
 
   res.status(200).send(students);
 });
-router.get("/create", (req, res) => {});
+router.get("/create/:userId/:userName", (req, res) => {
+  const { id, name } = req.params;
+
+  console.log(req.params);
+
+  res.send("OK");
+});
+
 router.get("/read", (req, res) => {
   res.send(students);
 });

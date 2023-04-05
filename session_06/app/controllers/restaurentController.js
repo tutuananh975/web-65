@@ -290,7 +290,7 @@ export const getRestaurents_48 = asyncHandler(async (req, res, next) => {
     8: http://localhost:3002/restaurents?score=min-90
     9: http://localhost:3002/restaurents?score=min-80-max-100
     10: http://localhost:3002/restaurents?latitude=max=-95.754168
-    11: http://localhost:3002/restaurents?cuisine=American%20&score=min-70&latitude=max=-65.754168
+    11: http://localhost:3002/restaurents?cuisine=not=American &score=min-70&latitude=max=-65.754168
     12: http://localhost:3002/restaurents?cuisine=not=American &score=min-70&latitude=max=-65.754168
     13: http://localhost:3002/restaurents?cuisine=not=American &grade=A&borough=not=Brooklyn&sort=cuisine=-1 
     14: http://localhost:3002/restaurents?project=restaurant_id,name,borough,cuisine&startName=Wil

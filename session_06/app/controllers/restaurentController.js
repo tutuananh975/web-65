@@ -1,7 +1,7 @@
-
 import { restauRentModel } from "../models.js";
+import asyncHandler from 'express-async-handler';
 
-export const getRestaurents = async (req, res, next) => {
+export const getRestaurents = asyncHandler(async (req, res, next) => {
     const objQuery = { ...req.query };
     let limit, skip, sort, project = {};
     for (let key in objQuery) {
@@ -95,153 +95,111 @@ export const getRestaurents = async (req, res, next) => {
     }
 
     console.log(objQuery);
-    console.log(limit, skip, sort, project)
-    try {
-        const data = await restauRentModel.find(objQuery).limit(limit).skip(skip).sort(sort).project(project).toArray();
-        res.json(data);
-    } catch (err) {
-        console.log(err);
-        next(err);
-    }
-}
+    console.log(limit, skip, sort, project);
+    const data = await restauRentModel.find(objQuery).limit(limit).skip(skip).sort(sort).project(project).toArray();
+    res.json(data);
+})
 
-export const getRestaurents_21 = async (req, res, next) => {
-    try {
-        const data = await restauRentModel.find({
-            $or: [
-                {
-                    $and: [
-                        { cuisine: { $ne: 'American ' } },
-                        { cuisine: { $ne: 'Chinese' } }
-                    ]
-                },
-                { name: { $regex: 'Wil.*' } }
-            ]
-        }).project({
-            restaurant_id: 1,
-            name: 1,
-            borough: 1,
-            cuisine: 1
-        }).toArray();
-        res.status(200).json(data);
-    } catch (err) {
-        next(err);
-    }
-}
+export const getRestaurents_21 =  asyncHandler(async (req, res, next) => {
+    const data = await restauRentModel.find({
+        $or: [
+            {
+                $and: [
+                    { cuisine: { $ne: 'American ' } },
+                    { cuisine: { $ne: 'Chinese' } }
+                ]
+            },
+            { name: { $regex: 'Wil.*' } }
+        ]
+    }).project({
+        restaurant_id: 1,
+        name: 1,
+        borough: 1,
+        cuisine: 1
+    }).toArray();
+    res.status(200).json(data);
+})
 
-export const getRestaurents_22 = async (req, res, next) => {
-    try {
-        const data = await restauRentModel.find({
-            'grades.grade': 'A',
-            'grades.score': 11,
-            'grades.date': new Date('2014-08-11T00:00:00Z')
-        }).project({
-            restaurant_id: 1,
-            name: 1,
-            grades: 1
-        }).toArray();
-        res.status(200).json(data);
-    } catch(err) {
-        next(err);
-    }
-}
+export const getRestaurents_22 = asyncHandler(async (req, res, next) => {
+    const data = await restauRentModel.find({
+        'grades.grade': 'A',
+        'grades.score': 11,
+        'grades.date': new Date('2014-08-11T00:00:00Z')
+    }).project({
+        restaurant_id: 1,
+        name: 1,
+        grades: 1
+    }).toArray();
+    res.status(200).json(data);
+})
 
-export const getRestaurents_23 = async (req, res, next) => {
-    try {
-        const data = await restauRentModel.find({
-            'grades.1.grade': 'A',
-            'grades.1.score': 9,
-            'grades.1.date': new Date('2014-08-11T00:00:00Z')
-        }).project({
-            restaurant_id: 1,
-            name: 1,
-            grades: 1
-        }).toArray();
-        res.status(200).json(data);
-    } catch(err) {
-        next(err);
-    }
-}
+export const getRestaurents_23 = asyncHandler(async (req, res, next) => {
+    const data = await restauRentModel.find({
+        'grades.1.grade': 'A',
+        'grades.1.score': 9,
+        'grades.1.date': new Date('2014-08-11T00:00:00Z')
+    }).project({
+        restaurant_id: 1,
+        name: 1,
+        grades: 1
+    }).toArray();
+    res.status(200).json(data);
+})
 
-export const getRestaurents_24 = async (req, res, next) => {
-    try {
-        const data = await restauRentModel.find({
-            'address.coord.1': {$gt: 42, $lt: 52}
-        }).project({
-            restaurant_id: 1,
-            name: 1,
-            address: 1
-        }).toArray();
-        res.status(200).json(data);
-    } catch(err) {
-        next(err);
-    }
-}
+export const getRestaurents_24 = asyncHandler(async (req, res, next) => {
+    const data = await restauRentModel.find({
+        'address.coord.1': {$gt: 42, $lt: 52}
+    }).project({
+        restaurant_id: 1,
+        name: 1,
+        address: 1
+    }).toArray();
+    res.status(200).json(data);
+})
 
-export const getRestaurents_27 = async (req, res, next) => {
-    try {
-        const data = await restauRentModel.find({}).sort({
-            cuisine: 1,
-            borough: -1
-        }).toArray();
-        res.status(200).json(data);
-    } catch(err) {
-        next(err);
-    }
-}
+export const getRestaurents_27 = asyncHandler(async (req, res, next) => {
+    const data = await restauRentModel.find({}).sort({
+        cuisine: 1,
+        borough: -1
+    }).toArray();
+    res.status(200).json(data);
+})
 
-export const getRestaurents_28 = async (req, res, next) => {
-    try {
-        const data = await restauRentModel.find({'address.street': {$exists: true}}).toArray();
-        const isTrue = data.length === await restauRentModel.countDocuments();
-        res.status(200).json({
-            message: isTrue? "all documents includes street" : "all documents not includes street",
-            data
-        });
-    } catch(err) {
-        next(err);
-    }
-}
+export const getRestaurents_28 = asyncHandler(async (req, res, next) => {
+    const data = await restauRentModel.find({'address.street': {$exists: true}}).toArray();
+    const isTrue = data.length === await restauRentModel.countDocuments();
+    res.status(200).json({
+        message: isTrue? "all documents includes street" : "all documents not includes street",
+        data
+    });
+})
 
-export const getRestaurents_29 = async (req, res, next) => {
-    try {
-        const data = await restauRentModel.find({'address.coord': {$type: 1}}).toArray();
-        res.status(200).json(data);
-    } catch(err) {
-        next(err);
-    }
-}
+export const getRestaurents_29 = asyncHandler(async (req, res, next) => {
+    const data = await restauRentModel.find({'address.coord': {$type: 1}}).toArray();
+    res.status(200).json(data);
+})
 
-export const getRestaurents_30 = async (req, res, next) => {
-    try {
-        const data = await restauRentModel.find({
-            'grades.score': {$mod: [7,0]}
-        }).project({
-            restaurant_id: 1,
-            name: 1,
-            grades: 1
-        }).toArray();
-        res.status(200).json(data);
-    } catch(err) {
-        next(err);
-    }
-}
+export const getRestaurents_30 = asyncHandler(async (req, res, next) => {
+    const data = await restauRentModel.find({
+        'grades.score': {$mod: [7,0]}
+    }).project({
+        restaurant_id: 1,
+        name: 1,
+        grades: 1
+    }).toArray();
+    res.status(200).json(data);
+})
 
-export const getRestaurents_37 = async (req, res, next) => {
-    try {
-        const data = await restauRentModel.find({
-            'grades.score': {$lt: 5},
-            borough: {$in: ['Manhattan', 'Brooklyn']},
-            cuisine: {$ne: 'American '}
-        }).toArray();
-        res.status(200).json(data);
-    } catch(err) {
-        next(err);
-    }
-}
+export const getRestaurents_37 = asyncHandler(async (req, res, next) => {
+    const data = await restauRentModel.find({
+        'grades.score': {$lt: 5},
+        borough: {$in: ['Manhattan', 'Brooklyn']},
+        cuisine: {$ne: 'American '}
+    }).toArray();
+    res.status(200).json(data);
+})
 
-// 38+39
-export const getRestaurents_38_42 = async (req, res, next) => {
+export const getRestaurents_38_42 = asyncHandler(async (req, res, next) => {
     const objQuery = { ...req.query };
     for (let key in objQuery) {
         if (objQuery[key].includes('|') && key.endsWith('NotIn')) {
@@ -263,21 +221,17 @@ export const getRestaurents_38_42 = async (req, res, next) => {
             objQuery[key] = { $ne: objQuery[key].split('not=')[1] };
         }
     }
-    try {
-        const data = await restauRentModel.find({
-            $and: [
-                objQuery,
-                {'grades.score': 2},
-                {'grades.score': 6}
-            ]
-        }).toArray();
-        res.status(200).json(data);
-    } catch(err) {
-        next(err);
-    }
-}
+    const data = await restauRentModel.find({
+        $and: [
+            objQuery,
+            {'grades.score': 2},
+            {'grades.score': 6}
+        ]
+    }).toArray();
+    res.status(200).json(data);
+})
 
-export const getRestaurents_43_47 = async (req, res, next) => {
+export const getRestaurents_43_47 = asyncHandler(async (req, res, next) => {
     const objQuery = { ...req.query };
     for (let key in objQuery) {
         if (objQuery[key].includes('|') && key.endsWith('NotIn')) {
@@ -300,38 +254,30 @@ export const getRestaurents_43_47 = async (req, res, next) => {
     }
     console.log(objQuery);
 
-    try {
-        const data = await restauRentModel.find({
-            $and: [
-                objQuery,
-                {$or: [
-                    {'grades.score': 2},
-                    {'grades.score': 6}
-                ]}
-            ]
-        }).toArray();
-        res.status(200).json(data);
-    } catch(err) {
-        next(err);
-    }
-}
+    const data = await restauRentModel.find({
+        $and: [
+            objQuery,
+            {$or: [
+                {'grades.score': 2},
+                {'grades.score': 6}
+            ]}
+        ]
+    }).toArray();
+    res.status(200).json(data);
+})
 
-export const getRestaurents_48 = async (req, res, next) => {
-    try {
-        const data = await restauRentModel.find({
-            grades: {
-                $not: {
-                    $elemMatch: {
-                        score: {$lte: 5}
-                    }
+export const getRestaurents_48 = asyncHandler(async (req, res, next) => {
+    const data = await restauRentModel.find({
+        grades: {
+            $not: {
+                $elemMatch: {
+                    score: {$lte: 5}
                 }
             }
-        }).toArray();
-        res.status(200).json(data);
-    } catch(err) {
-        next(err);
-    }
-}
+        }
+    }).toArray();
+    res.status(200).json(data);
+})
 
 /*
     1: http://localhost:3002/restaurents

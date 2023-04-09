@@ -1,7 +1,8 @@
-const catchErrorMiddleware = (req, res) => {
-    res.status(500).json({
-        status: 'failure',
-        message: 'Internal server error!!!',
+const catchErrorMiddleware = (err, req, res) => {
+    const status = res.status === 200 ? 500 : res.status;
+    res.status(status).json({
+        status: status,
+        message: err,
         data: ""
     })
 }
